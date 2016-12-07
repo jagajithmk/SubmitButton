@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'SubmitButton'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of SubmitButton.'
+  s.summary          = 'Submitbutton library provides a better user interation for a submit button.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,15 +17,13 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+  s.description      = 'Submitbutton library provide a new catching user interface for a submit button. This library is written in Swift 3. From now on, anytime the user clicks on the button that involves addressing to the server, they will see the animation that informs them of the progress and completion. '
 
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/SubmitButton'
+  s.homepage         = 'https://github.com/jagajithmk/SubmitButton'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Jagajith M Kalarickal' => 'jagajith@qburst.com' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/SubmitButton.git', :tag => s.version.to_s }
+  s.author           = { 'Jagajith M Kalarickal' => 'jagajithmk@gmail.com' }
+  s.source           = { :git => 'https://github.com/jagajithmk/SubmitButton.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
@@ -37,6 +35,6 @@ TODO: Add long description of the pod here.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+    s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
 end

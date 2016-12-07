@@ -1,0 +1,6 @@
+framework module SubmitButton {
+  umbrella header "SubmitButton-umbrella.h"
+
+  export *
+  module * { export * }
+}

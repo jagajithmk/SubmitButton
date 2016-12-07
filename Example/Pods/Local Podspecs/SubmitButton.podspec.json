@@ -1,0 +1,22 @@
+{
+  "name": "SubmitButton",
+  "version": "0.1.0",
+  "summary": "A short description of SubmitButton.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/SubmitButton",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Jagajith M Kalarickal": "jagajith@qburst.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/SubmitButton.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "SubmitButton/Classes/**/*"
+}

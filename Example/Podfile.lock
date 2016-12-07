@@ -1,0 +1,16 @@
+PODS:
+  - SubmitButton (0.1.0)
+
+DEPENDENCIES:
+  - SubmitButton (from `../`)
+
+EXTERNAL SOURCES:
+  SubmitButton:
+    :path: ../
+
+SPEC CHECKSUMS:
+  SubmitButton: f531407aa85eee27a39277774bafbb96c9531644
+
+PODFILE CHECKSUM: f42c027860107570fa656bdf0cca1854df684b12
+
+COCOAPODS: 1.1.1
