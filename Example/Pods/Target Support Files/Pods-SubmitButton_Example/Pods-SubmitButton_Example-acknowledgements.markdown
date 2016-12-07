@@ -3,7 +3,7 @@ This application makes use of the following third party libraries:
 
 ## SubmitButton
 
-Copyright (c) 2016 Jagajith M Kalarickal <jagajith@qburst.com>
+Copyright (c) 2016 Jagajith M Kalarickal <jagajithmk@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
