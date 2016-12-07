@@ -133,6 +133,7 @@ open class SubmitButton: UIButton {
     var progress: CGFloat = 0
     var timer: Timer?
     
+    //intiate the update of the progress of progress bar
     func updateLoadingProgress() {
         guard progress <= 1 else {
             timer?.invalidate()
@@ -205,6 +206,7 @@ open class SubmitButton: UIButton {
         buttonState = .finishing
     }
     
+    // update of the progress of progress bar
     open func updateProgress(_ progress: CGFloat) {
         progressLayer.strokeEnd = progress
         if progress >= Constants.maxStrokeEndPosition {
@@ -219,7 +221,7 @@ open class SubmitButton: UIButton {
     
     // MARK: - Selector && Action
     func touchUpInside(_ sender: SubmitButton) {
-        //*Code to reset buton after submit
+        //*Code to reset buton after submit, comment these if not needed
         guard !isSelected else {
             if currState == .finished {
                 resetToReady()
@@ -307,18 +309,14 @@ extension SubmitButton {
         }
     }
     
-    
-    
     // MARK: Animations Configuring
     
     //add button width animation
     fileprivate func addButtonWidthAnimation(){
         let boundAnim = CABasicAnimation(keyPath: AnimKeys.bounds)
         boundAnim.toValue = NSValue(cgRect: circleBounds)
-        
         let colorAnim = CABasicAnimation(keyPath: AnimKeys.backgroundColor)
         colorAnim.toValue = UIColor.white.cgColor
-        
         let layerGroup = CAAnimationGroup()
         layerGroup.animations = [boundAnim,colorAnim]
         layerGroup.duration = Constants.prepareLoadingAnimDuration
@@ -327,7 +325,6 @@ extension SubmitButton {
         layerGroup.isRemovedOnCompletion = false
         layerGroup.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         assignContext(.LoadingStart, anim: layerGroup)
-        
         layer.add(layerGroup, forKey: AnimKeys.bounds)
     }
     
@@ -359,8 +356,7 @@ extension SubmitButton {
         borderLayer.borderColor = UIColor.lightGray.cgColor
         isSelected = true
         timer?.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: TimeInterval(frequencyOfUpdate), target:self, selector: #selector(SubmitButton.updateLoadingProgress),
-                                     userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: TimeInterval(frequencyOfUpdate), target:self, selector: #selector(SubmitButton.updateLoadingProgress),userInfo: nil, repeats: true)
         prepareGroup.notify(queue: DispatchQueue.main) {
             self.borderLayer.borderWidth = self.crLineWidth
             self.borderLayer.bounds = self.circleBounds
@@ -413,12 +409,10 @@ extension SubmitButton {
     fileprivate func addButtonPositionAndSizeIncreasingAnimation(){
         let proportions: [CGFloat] = [ circleBounds.width / startBounds.width, 0.9, 1, ]
         var bounces = [NSValue]()
-        
         for i in 0..<proportions.count {
             let rect = CGRect(origin: startBounds.origin, size: CGSize(width: startBounds.width * proportions[i], height: startBounds.height))
             bounces.append( NSValue(cgRect: rect) )
         }
-        
         let borderBounce = CAKeyframeAnimation(keyPath: AnimKeys.bounds)
         borderBounce.keyTimes = [0 ,0.9,1]
         borderBounce.values = bounces
@@ -507,24 +501,18 @@ extension SubmitButton {
         // geometry of the layer
         let percentShiftY:CGFloat = 0.4
         let percentShiftX:CGFloat = -0.2
-        
         let firstRadius = 0.5 * circleBounds.midY
         let lastRadius  = 1 * circleBounds.midY
-        
         let firstAngle  = CGFloat(-3 * M_PI_4)
         let lastAngle   = CGFloat(-1 * M_PI_4)
-        
         var startPoint  = CGPoint(x: firstRadius * cos(firstAngle), y: firstRadius * sin(firstAngle))
         var midPoint    = CGPoint.zero
         var endPoint    = CGPoint(x: lastRadius * cos(lastAngle), y: lastRadius * sin(lastAngle))
-        
         let correctedPoint = CGPoint(x: boundsCenter.x + (boundsCenter.x * percentShiftX),
                                      y: boundsCenter.y + (boundsCenter.y * percentShiftY))
-        
         startPoint.addPoint( correctedPoint )
         midPoint.addPoint( correctedPoint )
         endPoint.addPoint( correctedPoint )
-        
         let path = UIBezierPath()
         path.move( to: startPoint )
         path.addLine( to: midPoint )

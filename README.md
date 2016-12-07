@@ -1,6 +1,5 @@
 # SubmitButton
 
-[![CI Status](http://img.shields.io/travis/Jagajith M Kalarickal/SubmitButton.svg?style=flat)](https://travis-ci.org/Jagajith M Kalarickal/SubmitButton)
 [![Version](https://img.shields.io/cocoapods/v/SubmitButton.svg?style=flat)](http://cocoapods.org/pods/SubmitButton)
 [![License](https://img.shields.io/cocoapods/l/SubmitButton.svg?style=flat)](http://cocoapods.org/pods/SubmitButton)
 [![Platform](https://img.shields.io/cocoapods/p/SubmitButton.svg?style=flat)](http://cocoapods.org/pods/SubmitButton)
@@ -11,7 +10,7 @@ SubmitButton is a subclass of UIButton, written in Swift 3. SubmitButton library
 
 
 ## Requirements
-* iOS8.4
+* iOS8.0
 
 ## Installation with CocoaPods
 
@@ -21,6 +20,8 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod "SubmitButton"
 ```
+
+Select button type as 'Custom' in Attributes inspector 
 
 ## Example Project
 
