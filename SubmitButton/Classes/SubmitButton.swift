@@ -25,6 +25,7 @@ public enum ButtonLoadingType {
 
 public enum ButtonCompletionStatus {
     case success
+    case canceled
     case failed
 }
 
@@ -311,8 +312,8 @@ extension SubmitButton {
     // MARK: Button Setup
     fileprivate func setupCommon() {
         // we should use old swift syntax for pass validation of podspec
-        addTarget(self, action: #selector(SubmitButton.touchDownInside(_:)), for: .touchDown)
-        addTarget(self, action: #selector(SubmitButton.touchDragExit(_:)), for: .touchDragExit)
+//        addTarget(self, action: #selector(SubmitButton.touchDownInside(_:)), for: .touchDown)
+//        addTarget(self, action: #selector(SubmitButton.touchDragExit(_:)), for: .touchDragExit)
         addTarget(self, action: #selector(SubmitButton.touchUpInside(_:)), for: .touchUpInside)
         contentEdgeInsets = UIEdgeInsets(top: 5,left: 20,bottom: 5,right: 20)
         setupButton()

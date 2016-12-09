@@ -66,7 +66,7 @@
                             <constraint firstItem="IWV-vC-q7T" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="fHz-W1-6En"/>
                             <constraint firstItem="WZL-aL-Q7Z" firstAttribute="top" secondItem="rdu-W8-xY2" secondAttribute="bottom" constant="25" id="htb-Kc-r5Z"/>
                             <constraint firstItem="IWV-vC-q7T" firstAttribute="top" secondItem="0M1-9w-hIV" secondAttribute="bottom" constant="25" id="kvm-i4-ruN"/>
-                            <constraint firstItem="rdu-W8-xY2" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="30" id="tUm-bA-uVC"/>
+                            <constraint firstItem="rdu-W8-xY2" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="100" id="tUm-bA-uVC"/>
                             <constraint firstItem="rdu-W8-xY2" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="u86-YI-iSE"/>
                             <constraint firstItem="WZL-aL-Q7Z" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="w2p-7j-WSY"/>
                         </constraints>
@@ -74,8 +74,8 @@
                     <connections>
                         <outlet property="button1" destination="rdu-W8-xY2" id="UuQ-1F-dgf"/>
                         <outlet property="button2" destination="WZL-aL-Q7Z" id="3BN-cI-yq2"/>
-                        <outlet property="button3" destination="0M1-9w-hIV" id="tgV-x6-Dlp"/>
-                        <outlet property="button4" destination="IWV-vC-q7T" id="rzn-29-VaD"/>
+                        <outlet property="button3" destination="0M1-9w-hIV" id="2Z4-mn-fQk"/>
+                        <outlet property="button4" destination="IWV-vC-q7T" id="iP0-da-QLk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
