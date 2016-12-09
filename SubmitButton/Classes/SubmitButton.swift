@@ -7,12 +7,25 @@
 
 import UIKit
 
+public protocol SubmitButtonDelegate: class {
+    func didFinishedTask(sender:SubmitButton)
+}
 
 public enum ButtonState {
     case ready
     case loading
     case finishing
     case finished
+}
+
+public enum ButtonLoadingType {
+    case continuous
+    case timeLimited
+}
+
+public enum ButtonCompletionStatus {
+    case success
+    case failed
 }
 
 private struct Constants {
@@ -32,6 +45,7 @@ private struct Constants {
     static let maxStrokeEndPosition: CGFloat = 1
     static let requestDuration: CGFloat = 1.0
     static let frequencyUpdate: CGFloat = 0.1
+    static let borderBounceKeyTime: [NSNumber] = [0 ,0.9,1]
 }
 
 private struct AnimKeys {
@@ -41,6 +55,8 @@ private struct AnimKeys {
     static let lineRotation = "lineRotation"
     static let transform = "transform"
     static let borderWidth = "borderWidth"
+    static let opacity = "opacity"
+    static let transformRotationZ = "transform.rotation.z"
 }
 
 enum AnimContext: String {
@@ -52,24 +68,51 @@ enum AnimContext: String {
 open class SubmitButton: UIButton {
     
     // MARK: - Public variables
-    
-    /// color of dots and line in loading state
+    /// Button loading type
+    @IBInspectable open var loadingType: ButtonLoadingType  = ButtonLoadingType.continuous
+    /// Color of dots and line in loading state
     @IBInspectable open var crDotColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1)
-    /// line width of the border
-    @IBInspectable open var crLineWidth: CGFloat = 5
-    /// border Color
+    /// Color of error button
+    @IBInspectable open var errorColor: UIColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+    /// Line width of the border
+    @IBInspectable open var crLineWidth: CGFloat = 3
+    /// Border Color
     @IBInspectable open var crBorderColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1) {
         didSet {
             borderLayer.borderColor = crBorderColor.cgColor
         }
     }
-    @IBInspectable open var startText:String = "Submit"
+    /// Lines count on loading state
+    @IBInspectable open var linesCount: UInt = 2
+    /// Measure in radians
+    @IBInspectable open var dotLength: CGFloat = 0.1
+    /// Time for pass one lap
+    @IBInspectable open var velocity: Double = 2
+    /// Loading center Color
+    @IBInspectable open var loadingCenterColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    /// Button background color
+    @IBInspectable open var startBackgroundColor: UIColor! = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) {
+        didSet {
+            layer.backgroundColor = startBackgroundColor.cgColor
+        }
+    }
+    /// Button title color
+    @IBInspectable open var startTitleColor: UIColor! = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1) {
+        didSet {
+            setTitleColor(startTitleColor, for: UIControlState())
+        }
+    }
+    @IBInspectable open var startText:String = "Submit" {
+        didSet {
+            setTitle(startText, for: UIControlState())
+        }
+    }
+    open weak var delegate: SubmitButtonDelegate?
     /// will clear after calling
     open var completionHandler: (()->())?
     open var currState: ButtonState {
         return buttonState
     }
-    
     open var frequencyOfUpdate: CGFloat {
         return Constants.frequencyUpdate
     }
@@ -100,6 +143,9 @@ open class SubmitButton: UIButton {
         return self.createCheckMark()
     }()
     
+    fileprivate lazy var errorCrossMarkLayer: CAShapeLayer = {
+        return self.createErrorCrossMark()
+    }()
     
     fileprivate var buttonState: ButtonState = .ready {
         didSet {
@@ -125,8 +171,6 @@ open class SubmitButton: UIButton {
     fileprivate var conWidth:  NSLayoutConstraint!
     fileprivate var conHeight: NSLayoutConstraint!
     fileprivate var startBounds: CGRect!
-    fileprivate var startBackgroundColor: UIColor! = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    fileprivate var startTitleColor: UIColor! = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1)
     fileprivate let prepareGroup = DispatchGroup()
     fileprivate let finishLoadingGroup = DispatchGroup()
     
@@ -172,16 +216,19 @@ open class SubmitButton: UIButton {
     
     // MARK: - Public Methods
     
+    //Function to resset button view
     open func resetToReady() {
         buttonState = .ready
         borderLayer.removeAllAnimations()
         layer.removeAllAnimations()
         checkMarkLayer.removeAllAnimations()
+        errorCrossMarkLayer.removeAllAnimations()
         clearLayerContext()
         CATransaction.begin()
         CATransaction.setDisableActions( true )
         layer.backgroundColor = startBackgroundColor.cgColor
         checkMarkLayer.opacity = Constants.minOpacity
+        errorCrossMarkLayer.opacity = Constants.minOpacity
         borderLayer.borderWidth = Constants.borderWidth
         borderLayer.borderColor = crBorderColor.cgColor
         progressLayer.removeFromSuperlayer()
@@ -238,8 +285,8 @@ open class SubmitButton: UIButton {
     }
     
     func touchDownInside(_ sender: SubmitButton) {
-        layer.backgroundColor = crDotColor.cgColor
-        setTitleColor(UIColor.white, for: UIControlState())
+        layer.backgroundColor = startTitleColor.cgColor
+        setTitleColor(startBackgroundColor, for: UIControlState())
         titleLabel?.font = UIFont.boldSystemFont(ofSize: Constants.maxFontSize)
     }
     
@@ -283,7 +330,7 @@ extension SubmitButton {
     //Function to remove temporary layer
     fileprivate func clearLayerContext() {
         for sublayer in layer.sublayers! {
-            if sublayer == borderLayer || sublayer == checkMarkLayer {
+            if sublayer == borderLayer || sublayer == checkMarkLayer || sublayer == errorCrossMarkLayer {
                 continue
             }
             if sublayer is CAShapeLayer {
@@ -292,7 +339,7 @@ extension SubmitButton {
         }
     }
     
-    // MARK: Managinf button state
+    // MARK: Managing button state
     fileprivate func handleButtonState(_ state: ButtonState) {
         switch state {
         case .ready:
@@ -300,7 +347,11 @@ extension SubmitButton {
         case .loading:
             isEnabled = false
             prepareLoadingAnimation({
-                self.startProgressLoadingAnimation()
+                if self.loadingType == ButtonLoadingType.timeLimited {
+                    self.startProgressLoadingAnimation()
+                } else {
+                    self.startLoadingAnimation()
+                }
             })
         case .finishing:
             finishAnimation()
@@ -316,7 +367,7 @@ extension SubmitButton {
         let boundAnim = CABasicAnimation(keyPath: AnimKeys.bounds)
         boundAnim.toValue = NSValue(cgRect: circleBounds)
         let colorAnim = CABasicAnimation(keyPath: AnimKeys.backgroundColor)
-        colorAnim.toValue = UIColor.white.cgColor
+        colorAnim.toValue = startTitleColor.cgColor
         let layerGroup = CAAnimationGroup()
         layerGroup.animations = [boundAnim,colorAnim]
         layerGroup.duration = Constants.prepareLoadingAnimDuration
@@ -346,6 +397,11 @@ extension SubmitButton {
         assignContext(.LoadingStart, anim: borderGroup)
         borderLayer.add(borderGroup, forKey: nil)
     }
+    // For adding time for loading
+    fileprivate func addTimerForLimitedTimeLoadingAnimation(){
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: TimeInterval(frequencyOfUpdate), target:self, selector: #selector(SubmitButton.updateLoadingProgress),userInfo: nil, repeats: true)
+    }
     
     // animate button to loading state, use completion to start loading animation
     fileprivate func prepareLoadingAnimation(_ completion: (()->())?) {
@@ -355,13 +411,14 @@ extension SubmitButton {
         prepareGroup.enter()
         borderLayer.borderColor = UIColor.lightGray.cgColor
         isSelected = true
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: TimeInterval(frequencyOfUpdate), target:self, selector: #selector(SubmitButton.updateLoadingProgress),userInfo: nil, repeats: true)
+        if self.loadingType == ButtonLoadingType.timeLimited{
+            addTimerForLimitedTimeLoadingAnimation()
+        }
         prepareGroup.notify(queue: DispatchQueue.main) {
             self.borderLayer.borderWidth = self.crLineWidth
             self.borderLayer.bounds = self.circleBounds
             self.borderLayer.position = self.boundsCenter
-            self.layer.backgroundColor = UIColor.white.cgColor
+            self.layer.backgroundColor = self.loadingCenterColor.cgColor
             self.bounds = self.circleBounds
             self.borderLayer.removeAllAnimations()
             self.layer.removeAllAnimations()
@@ -375,6 +432,44 @@ extension SubmitButton {
         progressLayer.position = boundsCenter
         layer.insertSublayer(progressLayer, above: borderLayer)
     }
+    
+    // start default loading
+    fileprivate func startLoadingAnimation() {
+        let arCenter = boundsCenter
+        let radius   = circleBounds.midX - crLineWidth / 2
+        var lines = [CAShapeLayer]()
+        let lineOffset:CGFloat = 2 * CGFloat(M_PI) / CGFloat(linesCount)
+        for i in 0..<linesCount {
+            let line = CAShapeLayer()
+            let startAngle = lineOffset * CGFloat(i)
+            line.path = UIBezierPath(arcCenter: arCenter,
+                                     radius: radius,
+                                     startAngle: startAngle,
+                                     endAngle: startAngle + dotLength,
+                                     clockwise: true).cgPath
+            
+            line.bounds = circleBounds
+            line.strokeColor = crDotColor.cgColor
+            line.lineWidth = crLineWidth
+            line.fillColor = crDotColor.cgColor
+            line.lineCap = kCALineCapRound
+            
+            layer.insertSublayer(line, above: borderLayer)
+            line.position = arCenter
+            lines.append( line )
+        }
+        let opacityAnim = CABasicAnimation(keyPath: AnimKeys.opacity)
+        opacityAnim.fromValue = 0
+        let rotation = CABasicAnimation(keyPath: AnimKeys.transformRotationZ)
+        rotation.byValue = NSNumber(value: 2*M_PI as Double)
+        rotation.duration = velocity
+        rotation.repeatCount = Float.infinity
+        for line in lines {
+            line.add(rotation, forKey: AnimKeys.lineRotation)
+            line.add(opacityAnim, forKey: nil)
+        }
+    }
+    
     
     // Finishing animation
     fileprivate func finishAnimation() {
@@ -398,15 +493,17 @@ extension SubmitButton {
             finishLoadingGroup.enter()
         }
         finishLoadingGroup.notify(queue: DispatchQueue.main) {
-            self.layer.backgroundColor = self.crDotColor.cgColor
-            self.borderLayer.opacity = Constants.maxOpacity
-            self.clearLayerContext()
-            self.checkMarkAndBoundsAnimation()
+            self.delegate?.didFinishedTask(sender: self)
         }
     }
+    //Complete animation based on user input
+    open func completeAnimation(status: ButtonCompletionStatus){
+        self.checkMarkAndBoundsAnimation(completionStatus: status)
+        self.clearLayerContext()
+    }
     
-    //Add button expanding animation
-    fileprivate func addButtonPositionAndSizeIncreasingAnimation(){
+    //Add button border expanding
+    fileprivate func addButtonBorderIncreasingAnimation(){
         let proportions: [CGFloat] = [ circleBounds.width / startBounds.width, 0.9, 1, ]
         var bounces = [NSValue]()
         for i in 0..<proportions.count {
@@ -414,7 +511,7 @@ extension SubmitButton {
             bounces.append( NSValue(cgRect: rect) )
         }
         let borderBounce = CAKeyframeAnimation(keyPath: AnimKeys.bounds)
-        borderBounce.keyTimes = [0 ,0.9,1]
+        borderBounce.keyTimes = Constants.borderBounceKeyTime
         borderBounce.values = bounces
         borderBounce.duration = Constants.bounceDuration
         borderBounce.beginTime = CACurrentMediaTime() + Constants.resetLinesPositionAnimDuration
@@ -424,9 +521,12 @@ extension SubmitButton {
         assignContext(.LoadingFinishing, anim: borderBounce)
         borderLayer.add(borderBounce, forKey: nil)
         finishLoadingGroup.enter()
+    }
+    //Add button border position animation
+    fileprivate func addButtonBorderPositionUpdationAnimation(){
         let borderPosition = CABasicAnimation(keyPath: AnimKeys.position)
         borderPosition.toValue = NSValue(cgPoint: boundsStartCenter)
-        borderPosition.duration = Constants.bounceDuration * borderBounce.keyTimes![1].doubleValue
+        borderPosition.duration = Constants.bounceDuration * Constants.borderBounceKeyTime[1].doubleValue
         borderPosition.beginTime = CACurrentMediaTime() + Constants.resetLinesPositionAnimDuration
         borderPosition.delegate = self
         borderPosition.isRemovedOnCompletion = false
@@ -434,16 +534,25 @@ extension SubmitButton {
         assignContext(.LoadingFinishing, anim: borderPosition)
         borderLayer.add(borderPosition, forKey: nil)
         finishLoadingGroup.enter()
+    }
+    
+    //Add button bound animation
+    fileprivate func addButtonBoundsAnimation(completionStatus: ButtonCompletionStatus){
         let boundsAnim = CABasicAnimation(keyPath: AnimKeys.bounds)
         boundsAnim.fromValue = NSValue(cgRect: (layer.presentation()!).bounds)
         boundsAnim.toValue = NSValue(cgRect: startBounds)
         let colorAnim = CABasicAnimation(keyPath: AnimKeys.backgroundColor)
-        colorAnim.toValue = crDotColor.cgColor
-        colorAnim.fromValue = crDotColor.cgColor
+        if completionStatus == .success {
+            colorAnim.toValue = crDotColor.cgColor
+            colorAnim.fromValue = crDotColor.cgColor
+        }else{
+            colorAnim.toValue = errorColor.cgColor
+            colorAnim.fromValue = errorColor.cgColor
+        }
         let layerGroup = CAAnimationGroup()
         layerGroup.animations = [boundsAnim, colorAnim]
-        layerGroup.duration = Constants.bounceDuration * borderBounce.keyTimes![1].doubleValue
-        layerGroup.beginTime = borderBounce.beginTime
+        layerGroup.duration = Constants.bounceDuration * Constants.borderBounceKeyTime[1].doubleValue
+        layerGroup.beginTime = CACurrentMediaTime() + Constants.resetLinesPositionAnimDuration
         layerGroup.delegate = self
         layerGroup.fillMode = kCAFillModeBoth
         layerGroup.isRemovedOnCompletion = false
@@ -453,20 +562,45 @@ extension SubmitButton {
         finishLoadingGroup.enter()
     }
     
+    //Add button expanding animation
+    fileprivate func addButtonPositionAndSizeIncreasingAnimation(status: ButtonCompletionStatus){
+        addButtonBorderIncreasingAnimation()
+        addButtonBorderPositionUpdationAnimation()
+        addButtonBoundsAnimation(completionStatus: status)
+        
+    }
+    
     //Add check mark and border expanding animation
-    fileprivate func checkMarkAndBoundsAnimation() {
-        borderLayer.borderColor = crDotColor.cgColor
+    fileprivate func checkMarkAndBoundsAnimation(completionStatus: ButtonCompletionStatus) {
+        self.borderLayer.opacity = Constants.maxOpacity
         layer.masksToBounds = false
-        addButtonPositionAndSizeIncreasingAnimation()
-        //Adding tick mark
-        checkMarkLayer.position = CGPoint(x: layer.bounds.midX, y: layer.bounds.midY)
-        if checkMarkLayer.superlayer == nil {
-            checkMarkLayer.path = pathForMark().cgPath
-            layer.addSublayer( checkMarkLayer )
+        addButtonPositionAndSizeIncreasingAnimation(status: completionStatus)
+        if completionStatus == .success {
+            //Adding tick mark
+            self.layer.backgroundColor = self.crDotColor.cgColor
+            borderLayer.borderColor = crDotColor.cgColor
+            checkMarkLayer.position = CGPoint(x: layer.bounds.midX, y: layer.bounds.midY)
+            if checkMarkLayer.superlayer == nil {
+                checkMarkLayer.path = pathForMark().cgPath
+                layer.addSublayer( checkMarkLayer )
+            }
+        }else{
+            self.layer.backgroundColor = errorColor.cgColor
+            borderLayer.borderColor = errorColor.cgColor
+            errorCrossMarkLayer.position = CGPoint(x: layer.bounds.midX, y: layer.bounds.midY)
+            if errorCrossMarkLayer.superlayer == nil {
+                errorCrossMarkLayer.path = pathForCrossMark().cgPath
+                layer.addSublayer( errorCrossMarkLayer )
+            }
         }
+        
         finishLoadingGroup.notify(queue: DispatchQueue.main) {
             UIView.animate(withDuration: 1.5, animations: {
-                self.checkMarkLayer.opacity = Constants.maxOpacity
+                if completionStatus == .success{
+                    self.checkMarkLayer.opacity = Constants.maxOpacity
+                }else{
+                    self.errorCrossMarkLayer.opacity = Constants.maxOpacity
+                }
             })
             self.buttonState = .finished
             self.isEnabled = true
@@ -482,7 +616,7 @@ extension SubmitButton {
         layer.bounds      = circleBounds
         layer.opacity     = Constants.minOpacity
         layer.fillColor   = nil
-        layer.strokeColor = UIColor.white.cgColor
+        layer.strokeColor = startBackgroundColor.cgColor
         layer.lineCap     = kCALineCapRound
         layer.lineJoin    = kCALineJoinRound
         layer.lineWidth   = crLineWidth
@@ -495,6 +629,12 @@ extension SubmitButton {
         let checkmarkLayer = createMarkLayer()
         return checkmarkLayer
     }
+    
+    fileprivate func createErrorCrossMark() -> CAShapeLayer {
+        let crossmarkLayer = createMarkLayer()
+        return crossmarkLayer
+    }
+    
     
     //Function for drawing the check mark
     fileprivate func pathForMark() -> UIBezierPath {
@@ -519,6 +659,25 @@ extension SubmitButton {
         path.addLine( to: endPoint )
         return path
     }
+    
+    fileprivate func pathForCrossMark() -> UIBezierPath {
+        // geometry for crossmark layer
+        let XShift:CGFloat = 15
+        let YShift:CGFloat = 15
+        
+        let firstStartPoint  = CGPoint(x: XShift, y: YShift)
+        let firstEndPoint    = CGPoint(x: circleBounds.maxX - XShift, y: circleBounds.maxY - XShift)
+        let secondStartPoint = CGPoint(x: circleBounds.maxX - XShift, y: circleBounds.minY + YShift)
+        let secondEndPoint   = CGPoint(x: circleBounds.minX + XShift, y: circleBounds.maxY - YShift)
+        
+        let path = UIBezierPath()
+        path.move(to: firstStartPoint)
+        path.addLine(to: firstEndPoint)
+        path.move(to: secondStartPoint)
+        path.addLine(to: secondEndPoint)
+        return path
+    }
+    
     
     fileprivate func assignContext(_ context:AnimContext, anim: CAAnimation ) {
         anim.setValue(context.rawValue, forKey: Constants.contextID)

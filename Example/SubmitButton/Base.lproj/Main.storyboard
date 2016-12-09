@@ -18,20 +18,65 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AL6-gh-2kn" customClass="SubmitButton" customModule="SubmitButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdu-W8-xY2" customClass="SubmitButton" customModule="SubmitButton">
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="HRA-6d-cLy"/>
-                                    <constraint firstAttribute="width" constant="250" id="lLs-h3-b2I"/>
+                                    <constraint firstAttribute="width" constant="250" id="LKF-vU-uwp"/>
+                                    <constraint firstAttribute="height" constant="50" id="i8d-G8-lGI"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="button1OnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="uZc-PQ-9N8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WZL-aL-Q7Z" customClass="SubmitButton" customModule="SubmitButton">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="0GN-lL-rbt"/>
+                                    <constraint firstAttribute="height" constant="50" id="bHC-4O-AEj"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="button2OnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="kBY-rS-qka"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0M1-9w-hIV" customClass="SubmitButton" customModule="SubmitButton">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="Gg8-K3-Eyu"/>
+                                    <constraint firstAttribute="height" constant="50" id="N8S-8S-ANW"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="button3OnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="91P-VD-k8U"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWV-vC-q7T" customClass="SubmitButton" customModule="SubmitButton">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="EIv-CD-ASY"/>
+                                    <constraint firstAttribute="height" constant="50" id="zib-EM-V75"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="button4OnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MFT-kf-kJi"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="AL6-gh-2kn" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Oy6-Gh-fxH"/>
-                            <constraint firstItem="AL6-gh-2kn" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="sgp-ub-UqO"/>
+                            <constraint firstItem="0M1-9w-hIV" firstAttribute="top" secondItem="WZL-aL-Q7Z" secondAttribute="bottom" constant="25" id="Ipt-rh-RoF"/>
+                            <constraint firstItem="0M1-9w-hIV" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="XBo-Os-hYj"/>
+                            <constraint firstItem="IWV-vC-q7T" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="fHz-W1-6En"/>
+                            <constraint firstItem="WZL-aL-Q7Z" firstAttribute="top" secondItem="rdu-W8-xY2" secondAttribute="bottom" constant="25" id="htb-Kc-r5Z"/>
+                            <constraint firstItem="IWV-vC-q7T" firstAttribute="top" secondItem="0M1-9w-hIV" secondAttribute="bottom" constant="25" id="kvm-i4-ruN"/>
+                            <constraint firstItem="rdu-W8-xY2" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="30" id="tUm-bA-uVC"/>
+                            <constraint firstItem="rdu-W8-xY2" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="u86-YI-iSE"/>
+                            <constraint firstItem="WZL-aL-Q7Z" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="w2p-7j-WSY"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="button1" destination="rdu-W8-xY2" id="UuQ-1F-dgf"/>
+                        <outlet property="button2" destination="WZL-aL-Q7Z" id="3BN-cI-yq2"/>
+                        <outlet property="button3" destination="0M1-9w-hIV" id="tgV-x6-Dlp"/>
+                        <outlet property="button4" destination="IWV-vC-q7T" id="rzn-29-VaD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
