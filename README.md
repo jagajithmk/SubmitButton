@@ -12,8 +12,8 @@ SubmitButton is a subclass of UIButton, written in Swift 3. SubmitButton library
 <img src="http://i.imgur.com/IwiJgfZ.gif" alt="SubmitButton" />
 </p>
 
-<p align="center"><img src="http://i.imgur.com/m8zkLWE.png" width="320" height="569" align="left"/><img src="http://i.imgur.com/X1ou1Xm.png" width="320" height="569" align="center"/><img src="http://i.imgur.com/faZcJV9.png" width="320" height="569" align="right"/></p>
-<p align="center"><img src="http://i.imgur.com/ndFeaBa.png " width="320" height="569" align="left"/><img src="http://i.imgur.com/CyaPeiY.png" width="320" height="569" align="center"/><img src="http://i.imgur.com/RIMpcsW.png" width="320" height="569" align="right"/></p>
+<p align="center"><img src="http://i.imgur.com/m8zkLWE.png" width="200" height="355" align="left"/><img src="http://i.imgur.com/X1ou1Xm.png" width="200" height="355" align="center"/><img src="http://i.imgur.com/faZcJV9.png" width="200" height="355" align="right"/></p>
+<p align="center"><img src="http://i.imgur.com/ndFeaBa.png " width="200" height="355" align="left"/><img src="http://i.imgur.com/CyaPeiY.png" width="200" height="355" align="center"/><img src="http://i.imgur.com/RIMpcsW.png" width="200" height="355" align="right"/></p>
 
 ## Requirements
 * iOS8.0
