@@ -9,7 +9,7 @@
 SubmitButton is a subclass of UIButton, written in Swift 3. SubmitButton library provide a new catching user interface for a submit button. From now on, anytime the user clicks on the button that involves addressing to the server, they will see the animation that informs them of the progress and completion.
 
 <p align="center">
-<img src="https://github.com/jagajithmk/SubmitButton/blob/master/Images/submit%20button.gif" alt="SubmitButton" />
+<img src="http://i.imgur.com/IwiJgfZ.gif" alt="SubmitButton" />
 </p>
 
 ## Requirements
