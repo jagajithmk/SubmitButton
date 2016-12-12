@@ -33,6 +33,7 @@ private struct Constants {
     
     static let contextID   = "kAnimationIdentifier"
     static let layerAnimation = "kLayerAnimation"
+    static let cancelButtonTitle = "Cancelled"
     static let prepareLoadingAnimDuration: TimeInterval = 0.2
     static let resetLinesPositionAnimDuration: TimeInterval = 0.2
     static let finishLoadingAnimDuration: TimeInterval  = 0.3
@@ -47,6 +48,9 @@ private struct Constants {
     static let requestDuration: CGFloat = 1.0
     static let frequencyUpdate: CGFloat = 0.1
     static let borderBounceKeyTime: [NSNumber] = [0 ,0.9,1]
+    static let errorCrossMarkXShift: CGFloat = 15
+    static let errorCrossMarkYShift: CGFloat = 15
+    static let cancelButtonTag: Int = 100
 }
 
 private struct AnimKeys {
@@ -75,6 +79,8 @@ open class SubmitButton: UIButton {
     @IBInspectable open var crDotColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1)
     /// Color of error button
     @IBInspectable open var errorColor: UIColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+    /// Color of cancelled button state
+    @IBInspectable open var cancelledButtonColor: UIColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
     /// Line width of the border
     @IBInspectable open var crLineWidth: CGFloat = 3
     /// Border Color
@@ -103,6 +109,9 @@ open class SubmitButton: UIButton {
             setTitleColor(startTitleColor, for: UIControlState())
         }
     }
+    /// Show cancel option while loading
+    @IBInspectable open var showCancel: Bool = false
+    
     @IBInspectable open var startText:String = "Submit" {
         didSet {
             setTitle(startText, for: UIControlState())
@@ -148,6 +157,10 @@ open class SubmitButton: UIButton {
         return self.createErrorCrossMark()
     }()
     
+    fileprivate lazy var cancelLayer: CAShapeLayer = {
+        return self.createCancel()
+    }()
+    
     fileprivate var buttonState: ButtonState = .ready {
         didSet {
             handleButtonState( buttonState )
@@ -168,6 +181,8 @@ open class SubmitButton: UIButton {
         return CGPoint(x: startBounds.midX, y: startBounds.midY)
     }
     
+    fileprivate var isCancel :Bool = false
+    
     // Constraints for button
     fileprivate var conWidth:  NSLayoutConstraint!
     fileprivate var conHeight: NSLayoutConstraint!
@@ -175,8 +190,8 @@ open class SubmitButton: UIButton {
     fileprivate let prepareGroup = DispatchGroup()
     fileprivate let finishLoadingGroup = DispatchGroup()
     
-    var progress: CGFloat = 0
-    var timer: Timer?
+    fileprivate var progress: CGFloat = 0
+    fileprivate var timer: Timer?
     
     //intiate the update of the progress of progress bar
     func updateLoadingProgress() {
@@ -219,6 +234,8 @@ open class SubmitButton: UIButton {
     
     //Function to resset button view
     open func resetToReady() {
+        progress = 0
+        isCancel = false
         buttonState = .ready
         borderLayer.removeAllAnimations()
         layer.removeAllAnimations()
@@ -257,9 +274,6 @@ open class SubmitButton: UIButton {
     // update of the progress of progress bar
     open func updateProgress(_ progress: CGFloat) {
         progressLayer.strokeEnd = progress
-        if progress >= Constants.maxStrokeEndPosition {
-            borderLayer.borderColor = crBorderColor.cgColor
-        }
     }
     
     lazy var progressPerFrequency: CGFloat = {
@@ -269,32 +283,22 @@ open class SubmitButton: UIButton {
     
     // MARK: - Selector && Action
     func touchUpInside(_ sender: SubmitButton) {
-        //*Code to reset buton after submit, comment these if not needed
-        guard !isSelected else {
-            if currState == .finished {
-                resetToReady()
-                isSelected = false
+        if self.buttonState != .loading {
+            //*Code to reset buton after submit, comment these if not needed
+            guard !isSelected else {
+                if currState == .finished {
+                    resetToReady()
+                    isSelected = false
+                }
+                return
+            }//*
+            
+            titleLabel?.font = UIFont.systemFont(ofSize: Constants.minFontSize)
+            guard buttonState != .finished else {
+                return
             }
-            return
-        }//*
-        
-        titleLabel?.font = UIFont.systemFont(ofSize: Constants.minFontSize)
-        guard buttonState != .finished else {
-            return
+            startAnimate()
         }
-        startAnimate()
-    }
-    
-    func touchDownInside(_ sender: SubmitButton) {
-        layer.backgroundColor = startTitleColor.cgColor
-        setTitleColor(startBackgroundColor, for: UIControlState())
-        titleLabel?.font = UIFont.boldSystemFont(ofSize: Constants.maxFontSize)
-    }
-    
-    func touchDragExit(_ sender: SubmitButton) {
-        layer.backgroundColor = startBackgroundColor.cgColor
-        setTitleColor(startTitleColor, for: UIControlState())
-        titleLabel?.font = UIFont.systemFont(ofSize: Constants.minFontSize)
     }
 }
 
@@ -311,9 +315,6 @@ extension SubmitButton {
     
     // MARK: Button Setup
     fileprivate func setupCommon() {
-        // we should use old swift syntax for pass validation of podspec
-//        addTarget(self, action: #selector(SubmitButton.touchDownInside(_:)), for: .touchDown)
-//        addTarget(self, action: #selector(SubmitButton.touchDragExit(_:)), for: .touchDragExit)
         addTarget(self, action: #selector(SubmitButton.touchUpInside(_:)), for: .touchUpInside)
         contentEdgeInsets = UIEdgeInsets(top: 5,left: 20,bottom: 5,right: 20)
         setupButton()
@@ -346,7 +347,6 @@ extension SubmitButton {
         case .ready:
             break
         case .loading:
-            isEnabled = false
             prepareLoadingAnimation({
                 if self.loadingType == ButtonLoadingType.timeLimited {
                     self.startProgressLoadingAnimation()
@@ -432,6 +432,9 @@ extension SubmitButton {
     fileprivate func startProgressLoadingAnimation() {
         progressLayer.position = boundsCenter
         layer.insertSublayer(progressLayer, above: borderLayer)
+        if showCancel {
+            addCancelOptionWhileLoading()
+        }
     }
     
     // start default loading
@@ -454,7 +457,6 @@ extension SubmitButton {
             line.lineWidth = crLineWidth
             line.fillColor = crDotColor.cgColor
             line.lineCap = kCALineCapRound
-            
             layer.insertSublayer(line, above: borderLayer)
             line.position = arCenter
             lines.append( line )
@@ -468,6 +470,9 @@ extension SubmitButton {
         for line in lines {
             line.add(rotation, forKey: AnimKeys.lineRotation)
             line.add(opacityAnim, forKey: nil)
+        }
+        if showCancel {
+            addCancelOptionWhileLoading()
         }
     }
     
@@ -499,6 +504,11 @@ extension SubmitButton {
     }
     //Complete animation based on user input
     open func completeAnimation(status: ButtonCompletionStatus){
+        if showCancel && isCancel && status != .canceled {
+            return
+        }
+        timer?.invalidate()
+        viewWithTag(Constants.cancelButtonTag)?.removeFromSuperview()
         self.checkMarkAndBoundsAnimation(completionStatus: status)
         self.clearLayerContext()
     }
@@ -546,9 +556,12 @@ extension SubmitButton {
         if completionStatus == .success {
             colorAnim.toValue = crDotColor.cgColor
             colorAnim.fromValue = crDotColor.cgColor
-        }else{
+        }else if completionStatus == .failed{
             colorAnim.toValue = errorColor.cgColor
             colorAnim.fromValue = errorColor.cgColor
+        }else{
+            colorAnim.toValue = cancelledButtonColor.cgColor
+            colorAnim.fromValue = cancelledButtonColor.cgColor
         }
         let layerGroup = CAAnimationGroup()
         layerGroup.animations = [boundsAnim, colorAnim]
@@ -585,26 +598,32 @@ extension SubmitButton {
                 checkMarkLayer.path = pathForMark().cgPath
                 layer.addSublayer( checkMarkLayer )
             }
-        }else{
+        }else if completionStatus == .failed{
             self.layer.backgroundColor = errorColor.cgColor
             borderLayer.borderColor = errorColor.cgColor
             errorCrossMarkLayer.position = CGPoint(x: layer.bounds.midX, y: layer.bounds.midY)
             if errorCrossMarkLayer.superlayer == nil {
-                errorCrossMarkLayer.path = pathForCrossMark().cgPath
+                errorCrossMarkLayer.path = pathForCrossMark(XShift: Constants.errorCrossMarkXShift, YShift: Constants.errorCrossMarkYShift).cgPath
                 layer.addSublayer( errorCrossMarkLayer )
             }
+        }else {
+            self.layer.backgroundColor = cancelledButtonColor.cgColor
+            borderLayer.borderColor = cancelledButtonColor.cgColor
+            setTitle(Constants.cancelButtonTitle, for: UIControlState())
+            setTitleColor(UIColor.white, for: UIControlState())
         }
         
         finishLoadingGroup.notify(queue: DispatchQueue.main) {
-            UIView.animate(withDuration: 1.5, animations: {
+            UIView.animate(withDuration: 0.5, animations: {
                 if completionStatus == .success{
                     self.checkMarkLayer.opacity = Constants.maxOpacity
-                }else{
+                }else if completionStatus == .failed{
                     self.errorCrossMarkLayer.opacity = Constants.maxOpacity
+                }else{
+                    self.titleLabel?.alpha = CGFloat(Constants.maxOpacity)
                 }
             })
             self.buttonState = .finished
-            self.isEnabled = true
         }
     }
     
@@ -621,7 +640,6 @@ extension SubmitButton {
         layer.lineCap     = kCALineCapRound
         layer.lineJoin    = kCALineJoinRound
         layer.lineWidth   = crLineWidth
-        
         return layer
     }
     
@@ -634,6 +652,11 @@ extension SubmitButton {
     fileprivate func createErrorCrossMark() -> CAShapeLayer {
         let crossmarkLayer = createMarkLayer()
         return crossmarkLayer
+    }
+    
+    fileprivate func createCancel() -> CAShapeLayer {
+        let cancelLayer = createMarkLayer()
+        return cancelLayer
     }
     
     
@@ -661,11 +684,8 @@ extension SubmitButton {
         return path
     }
     
-    fileprivate func pathForCrossMark() -> UIBezierPath {
+    fileprivate func pathForCrossMark(XShift:CGFloat,YShift:CGFloat) -> UIBezierPath {
         // geometry for crossmark layer
-        let XShift:CGFloat = 15
-        let YShift:CGFloat = 15
-        
         let firstStartPoint  = CGPoint(x: XShift, y: YShift)
         let firstEndPoint    = CGPoint(x: circleBounds.maxX - XShift, y: circleBounds.maxY - XShift)
         let secondStartPoint = CGPoint(x: circleBounds.maxX - XShift, y: circleBounds.minY + YShift)
@@ -679,6 +699,22 @@ extension SubmitButton {
         return path
     }
     
+    fileprivate func addCancelOptionWhileLoading(){
+        let button = UIButton(type: .custom)
+        button.tag = Constants.cancelButtonTag
+        button.frame = CGRect(x: layer.bounds.midX-20, y: layer.bounds.midY-20, width: 40, height: 40)
+        button.layer.cornerRadius = 0.5 * button.bounds.size.width
+        button.clipsToBounds = true
+        button.setImage(#imageLiteral(resourceName: "cancel"), for: .normal)
+        button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
+        self.addSubview(button)
+    }
+    
+    func cancelButtonPressed() {
+        
+        isCancel = true
+        completeAnimation(status: .canceled)
+    }
     
     fileprivate func assignContext(_ context:AnimContext, anim: CAAnimation ) {
         anim.setValue(context.rawValue, forKey: Constants.contextID)

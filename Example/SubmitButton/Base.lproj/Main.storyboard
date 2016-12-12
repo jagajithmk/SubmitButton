@@ -25,7 +25,7 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="button1OnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="uZc-PQ-9N8"/>
+                                    <action selector="firstButtonOnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Jyl-qe-lyB"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WZL-aL-Q7Z" customClass="SubmitButton" customModule="SubmitButton">
@@ -35,7 +35,7 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="button2OnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="kBY-rS-qka"/>
+                                    <action selector="secondButtonOnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Wdk-z3-LWO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0M1-9w-hIV" customClass="SubmitButton" customModule="SubmitButton">
@@ -45,7 +45,7 @@
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="button3OnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="91P-VD-k8U"/>
+                                    <action selector="thirdButtonOnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="5zI-Ky-Zwc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWV-vC-q7T" customClass="SubmitButton" customModule="SubmitButton">
@@ -54,8 +54,11 @@
                                     <constraint firstAttribute="height" constant="50" id="zib-EM-V75"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showCancel" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="button4OnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MFT-kf-kJi"/>
+                                    <action selector="fourthButtonOnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7Pd-Q3-UVp"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -72,10 +75,10 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="button1" destination="rdu-W8-xY2" id="UuQ-1F-dgf"/>
-                        <outlet property="button2" destination="WZL-aL-Q7Z" id="3BN-cI-yq2"/>
-                        <outlet property="button3" destination="0M1-9w-hIV" id="2Z4-mn-fQk"/>
-                        <outlet property="button4" destination="IWV-vC-q7T" id="iP0-da-QLk"/>
+                        <outlet property="firstButton" destination="rdu-W8-xY2" id="QaD-sH-VaQ"/>
+                        <outlet property="fourthButton" destination="IWV-vC-q7T" id="Wfl-L9-gy5"/>
+                        <outlet property="secondButton" destination="WZL-aL-Q7Z" id="OlN-nj-6y3"/>
+                        <outlet property="thirdButton" destination="0M1-9w-hIV" id="nZO-BX-WGf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

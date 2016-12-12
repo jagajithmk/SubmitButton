@@ -8,6 +8,9 @@
 
 SubmitButton is a subclass of UIButton, written in Swift 3. SubmitButton library provide a new catching user interface for a submit button. From now on, anytime the user clicks on the button that involves addressing to the server, they will see the animation that informs them of the progress and completion.
 
+<p align="center">
+<img src="https://github.com/jagajithmk/SubmitButton/blob/master/Images/submit%20button.gif" alt="SubmitButton" />
+</p>
 
 ## Requirements
 * iOS8.0
@@ -26,6 +29,23 @@ Select button type as 'Custom' in Attributes inspector
 ## Example Project
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+## Usage
+
+* Use loadingType property to select the button loading type.
+* Use showCancel property to show cancel while loading.
+* Use didFinishedTask delegate method to handle button response.
+
+
+## Release Notes
+
+Version 0.1.2
+* Added functionality to cancel loading
+* Added error completion mode
+* Added deleagtes for button response handling
+
+Version 0.1.1
+* Initial release
 
 ## Author
 
