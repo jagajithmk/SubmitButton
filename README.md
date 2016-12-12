@@ -39,7 +39,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Release Notes
 
-Version 0.1.2
+Version 0.2.1
 * Added functionality to cancel loading
 * Added error completion mode
 * Added deleagtes for button response handling
