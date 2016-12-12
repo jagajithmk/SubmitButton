@@ -12,6 +12,8 @@ SubmitButton is a subclass of UIButton, written in Swift 3. SubmitButton library
 <img src="http://i.imgur.com/IwiJgfZ.gif" alt="SubmitButton" />
 </p>
 
+<p align="center"><img src="http://i.imgur.com/m8zkLWE.png" width="320" height="569" align="left"/></p>
+
 ![ScreenShot](http://i.imgur.com/m8zkLWE.png =320×569)
 ![ScreenShot](http://i.imgur.com/X1ou1Xm.png =320×569)
 ![ScreenShot](http://i.imgur.com/faZcJV9.png =320×569)
