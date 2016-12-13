@@ -51,6 +51,10 @@ private struct Constants {
     static let errorCrossMarkXShift: CGFloat = 15
     static let errorCrossMarkYShift: CGFloat = 15
     static let cancelButtonTag: Int = 100
+    static let cancelMarkXShift: CGFloat = 17
+    static let cancelMarkYShift: CGFloat = 17
+    static let cancelButtonHeight: CGFloat = 40
+    static let cancelButtonWidth: CGFloat = 40
 }
 
 private struct AnimKeys {
@@ -110,7 +114,10 @@ open class SubmitButton: UIButton {
         }
     }
     /// Show cancel option while loading
-    @IBInspectable open var showCancel: Bool = false
+    @IBInspectable open var cancelEnabled: Bool = false
+    
+    /// Color of error button
+    @IBInspectable open var cancelOptionColor: UIColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
     
     @IBInspectable open var startText:String = "Submit" {
         didSet {
@@ -181,7 +188,7 @@ open class SubmitButton: UIButton {
         return CGPoint(x: startBounds.midX, y: startBounds.midY)
     }
     
-    fileprivate var isCancel :Bool = false
+    fileprivate var isCancelEnabled :Bool = false
     
     // Constraints for button
     fileprivate var conWidth:  NSLayoutConstraint!
@@ -235,7 +242,7 @@ open class SubmitButton: UIButton {
     //Function to resset button view
     open func resetToReady() {
         progress = 0
-        isCancel = false
+        isCancelEnabled = false
         buttonState = .ready
         borderLayer.removeAllAnimations()
         layer.removeAllAnimations()
@@ -432,7 +439,7 @@ extension SubmitButton {
     fileprivate func startProgressLoadingAnimation() {
         progressLayer.position = boundsCenter
         layer.insertSublayer(progressLayer, above: borderLayer)
-        if showCancel {
+        if cancelEnabled {
             addCancelOptionWhileLoading()
         }
     }
@@ -471,7 +478,7 @@ extension SubmitButton {
             line.add(rotation, forKey: AnimKeys.lineRotation)
             line.add(opacityAnim, forKey: nil)
         }
-        if showCancel {
+        if cancelEnabled {
             addCancelOptionWhileLoading()
         }
     }
@@ -504,7 +511,7 @@ extension SubmitButton {
     }
     //Complete animation based on user input
     open func completeAnimation(status: ButtonCompletionStatus){
-        if showCancel && isCancel && status != .canceled {
+        if cancelEnabled && isCancelEnabled && status != .canceled {
             return
         }
         timer?.invalidate()
@@ -702,27 +709,25 @@ extension SubmitButton {
     fileprivate func addCancelOptionWhileLoading(){
         let button = UIButton(type: .custom)
         button.tag = Constants.cancelButtonTag
-        button.frame = CGRect(x: layer.bounds.midX-20, y: layer.bounds.midY-20, width: 40, height: 40)
+        button.frame = CGRect(x: layer.bounds.midX-Constants.cancelButtonWidth/2, y: layer.bounds.midY-Constants.cancelButtonHeight/2, width: Constants.cancelButtonWidth, height: Constants.cancelButtonHeight)
         button.layer.cornerRadius = 0.5 * button.bounds.size.width
         button.clipsToBounds = true
-        button.setImage(getImageFromResourseBundle(imageNmae: "cancel"), for: .normal)
+        let tempLayer         = CAShapeLayer()
+        tempLayer.bounds      = button.frame
+        tempLayer.fillColor   = nil
+        tempLayer.strokeColor = cancelOptionColor.cgColor
+        tempLayer.lineCap     = kCALineCapRound
+        tempLayer.lineJoin    = kCALineJoinRound
+        tempLayer.lineWidth   = sbLineWidth
+        tempLayer.position = CGPoint(x: button.layer.bounds.midX, y: button.layer.bounds.midY)
+        tempLayer.path = pathForCrossMark(XShift: Constants.cancelMarkXShift, YShift: Constants.cancelMarkYShift).cgPath
+        button.layer.addSublayer( tempLayer )
         button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
         self.addSubview(button)
     }
     
-    func getImageFromResourseBundle(imageNmae: String) -> UIImage{
-        var retrievedImage = UIImage()
-        let podBundle = Bundle(for: SubmitButton.self)
-        if let url = podBundle.url(forResource: "SubmitButton", withExtension: "bundle"){   // leave the extension as "bundle"
-            let submitButtonResoursesBundle = Bundle(url: url)
-            retrievedImage = UIImage(named: imageNmae, in: submitButtonResoursesBundle, compatibleWith: nil)!
-        }
-        return retrievedImage
-    }
-    
     func cancelButtonPressed() {
-        
-        isCancel = true
+        isCancelEnabled = true
         completeAnimation(status: .canceled)
     }
     
