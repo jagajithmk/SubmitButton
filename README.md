@@ -27,20 +27,21 @@ it, simply add the following line to your Podfile:
 pod "SubmitButton"
 ```
 
-Select button type as 'Custom' in Attributes inspector 
+* Select button type as 'Custom' in Attributes inspector 
+* Use loadingType property to select the button loading type.
+* Use showCancel property to show cancel while loading.
+* Set deleagte for each button for handling delegate function.
+* Use didFinishedTask delegate method to handle button response.
+
 
 ## Example Project
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Usage
-
-* Use loadingType property to select the button loading type.
-* Use showCancel property to show cancel while loading.
-* Use didFinishedTask delegate method to handle button response.
-
-
 ## Release Notes
+
+Version 0.2.2
+* Fixed minor bugs
 
 Version 0.2.1
 * Added functionality to cancel loading

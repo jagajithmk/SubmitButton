@@ -76,17 +76,17 @@ open class SubmitButton: UIButton {
     /// Button loading type
     @IBInspectable open var loadingType: ButtonLoadingType  = ButtonLoadingType.continuous
     /// Color of dots and line in loading state
-    @IBInspectable open var crDotColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1)
+    @IBInspectable open var sbDotColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1)
     /// Color of error button
     @IBInspectable open var errorColor: UIColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
     /// Color of cancelled button state
     @IBInspectable open var cancelledButtonColor: UIColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
     /// Line width of the border
-    @IBInspectable open var crLineWidth: CGFloat = 3
+    @IBInspectable open var sbLineWidth: CGFloat = 3
     /// Border Color
-    @IBInspectable open var crBorderColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1) {
+    @IBInspectable open var sbBorderColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1) {
         didSet {
-            borderLayer.borderColor = crBorderColor.cgColor
+            borderLayer.borderColor = sbBorderColor.cgColor
         }
     }
     /// Lines count on loading state
@@ -131,7 +131,7 @@ open class SubmitButton: UIButton {
     fileprivate lazy var borderLayer: CALayer = {
         let layer =  CALayer()
         layer.borderWidth = Constants.borderWidth
-        layer.borderColor = self.crBorderColor.cgColor
+        layer.borderColor = self.sbBorderColor.cgColor
         layer.backgroundColor = nil
         return layer
     }()
@@ -139,13 +139,13 @@ open class SubmitButton: UIButton {
     fileprivate lazy var progressLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = nil
-        layer.strokeColor = self.crDotColor.cgColor
+        layer.strokeColor = self.sbDotColor.cgColor
         layer.bounds = self.circleBounds
-        layer.path = UIBezierPath(arcCenter: self.boundsCenter, radius: self.boundsCenter.y - self.crLineWidth / 2,
+        layer.path = UIBezierPath(arcCenter: self.boundsCenter, radius: self.boundsCenter.y - self.sbLineWidth / 2,
                                   startAngle: CGFloat(-M_PI_2), endAngle: 3*CGFloat(M_PI_2), clockwise: true).cgPath
         layer.strokeEnd = Constants.minStrokeEndPosition
         layer.lineCap = kCALineCapRound
-        layer.lineWidth = self.crLineWidth
+        layer.lineWidth = self.sbLineWidth
         return layer
     }()
     
@@ -248,7 +248,7 @@ open class SubmitButton: UIButton {
         checkMarkLayer.opacity = Constants.minOpacity
         errorCrossMarkLayer.opacity = Constants.minOpacity
         borderLayer.borderWidth = Constants.borderWidth
-        borderLayer.borderColor = crBorderColor.cgColor
+        borderLayer.borderColor = sbBorderColor.cgColor
         progressLayer.removeFromSuperlayer()
         progressLayer.strokeEnd = Constants.minStrokeEndPosition
         CATransaction.commit()
@@ -324,7 +324,7 @@ extension SubmitButton {
     fileprivate func setupButton() {
         setTitle(startText, for: UIControlState())
         layer.cornerRadius  = bounds.midY
-        layer.borderColor = crBorderColor.cgColor
+        layer.borderColor = sbBorderColor.cgColor
         layer.addSublayer( borderLayer )
         setTitleColor(startTitleColor, for: UIControlState())
     }
@@ -383,7 +383,7 @@ extension SubmitButton {
     //add button border position and size animation
     fileprivate func addBorderPositionAndSizeDecreasingAnimation(){
         let borderAnim = CABasicAnimation(keyPath: AnimKeys.borderWidth)
-        borderAnim.toValue = crLineWidth
+        borderAnim.toValue = sbLineWidth
         let borderBounds = CABasicAnimation(keyPath: AnimKeys.bounds)
         borderBounds.toValue = NSValue(cgRect: circleBounds)
         let borderPosition = CABasicAnimation(keyPath: AnimKeys.position)
@@ -416,7 +416,7 @@ extension SubmitButton {
             addTimerForLimitedTimeLoadingAnimation()
         }
         prepareGroup.notify(queue: DispatchQueue.main) {
-            self.borderLayer.borderWidth = self.crLineWidth
+            self.borderLayer.borderWidth = self.sbLineWidth
             self.borderLayer.bounds = self.circleBounds
             self.borderLayer.position = self.boundsCenter
             self.layer.backgroundColor = self.loadingCenterColor.cgColor
@@ -440,7 +440,7 @@ extension SubmitButton {
     // start default loading
     fileprivate func startLoadingAnimation() {
         let arCenter = boundsCenter
-        let radius   = circleBounds.midX - crLineWidth / 2
+        let radius   = circleBounds.midX - sbLineWidth / 2
         var lines = [CAShapeLayer]()
         let lineOffset:CGFloat = 2 * CGFloat(M_PI) / CGFloat(linesCount)
         for i in 0..<linesCount {
@@ -453,9 +453,9 @@ extension SubmitButton {
                                      clockwise: true).cgPath
             
             line.bounds = circleBounds
-            line.strokeColor = crDotColor.cgColor
-            line.lineWidth = crLineWidth
-            line.fillColor = crDotColor.cgColor
+            line.strokeColor = sbDotColor.cgColor
+            line.lineWidth = sbLineWidth
+            line.fillColor = sbDotColor.cgColor
             line.lineCap = kCALineCapRound
             layer.insertSublayer(line, above: borderLayer)
             line.position = arCenter
@@ -554,8 +554,8 @@ extension SubmitButton {
         boundsAnim.toValue = NSValue(cgRect: startBounds)
         let colorAnim = CABasicAnimation(keyPath: AnimKeys.backgroundColor)
         if completionStatus == .success {
-            colorAnim.toValue = crDotColor.cgColor
-            colorAnim.fromValue = crDotColor.cgColor
+            colorAnim.toValue = sbDotColor.cgColor
+            colorAnim.fromValue = sbDotColor.cgColor
         }else if completionStatus == .failed{
             colorAnim.toValue = errorColor.cgColor
             colorAnim.fromValue = errorColor.cgColor
@@ -591,8 +591,8 @@ extension SubmitButton {
         addButtonPositionAndSizeIncreasingAnimation(status: completionStatus)
         if completionStatus == .success {
             //Adding tick mark
-            self.layer.backgroundColor = self.crDotColor.cgColor
-            borderLayer.borderColor = crDotColor.cgColor
+            self.layer.backgroundColor = self.sbDotColor.cgColor
+            borderLayer.borderColor = sbDotColor.cgColor
             checkMarkLayer.position = CGPoint(x: layer.bounds.midX, y: layer.bounds.midY)
             if checkMarkLayer.superlayer == nil {
                 checkMarkLayer.path = pathForMark().cgPath
@@ -639,7 +639,7 @@ extension SubmitButton {
         layer.strokeColor = startBackgroundColor.cgColor
         layer.lineCap     = kCALineCapRound
         layer.lineJoin    = kCALineJoinRound
-        layer.lineWidth   = crLineWidth
+        layer.lineWidth   = sbLineWidth
         return layer
     }
     
@@ -705,9 +705,19 @@ extension SubmitButton {
         button.frame = CGRect(x: layer.bounds.midX-20, y: layer.bounds.midY-20, width: 40, height: 40)
         button.layer.cornerRadius = 0.5 * button.bounds.size.width
         button.clipsToBounds = true
-        button.setImage(#imageLiteral(resourceName: "cancel"), for: .normal)
+        button.setImage(getImageFromResourseBundle(imageNmae: "cancel"), for: .normal)
         button.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
         self.addSubview(button)
+    }
+    
+    func getImageFromResourseBundle(imageNmae: String) -> UIImage{
+        var retrievedImage = UIImage()
+        let podBundle = Bundle(for: SubmitButton.self)
+        if let url = podBundle.url(forResource: "SubmitButton", withExtension: "bundle"){   // leave the extension as "bundle"
+            let submitButtonResoursesBundle = Bundle(url: url)
+            retrievedImage = UIImage(named: imageNmae, in: submitButtonResoursesBundle, compatibleWith: nil)!
+        }
+        return retrievedImage
     }
     
     func cancelButtonPressed() {

@@ -54,9 +54,6 @@
                                     <constraint firstAttribute="height" constant="50" id="zib-EM-V75"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showCancel" value="YES"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="fourthButtonOnClick:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7Pd-Q3-UVp"/>
                                 </connections>
