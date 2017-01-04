@@ -12,28 +12,92 @@ SubmitButton is a subclass of UIButton, written in Swift 3. SubmitButton library
 <img src="http://i.imgur.com/IwiJgfZ.gif" alt="SubmitButton" />
 </p>
 
-## Requirements
-* iOS8.0
+## Highlights
 
-## Installation with CocoaPods
+- [x] Color of button is custom.
+- [x] Shows loading indicator.
+- [x] Support success, failed and cancelled status.
+- [x] Support storyboard customization. 
+- [x] Supports Swift and Objective-C.
 
-SubmitButton is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+## Installation
 
-```ruby
-pod "SubmitButton"
+### CocoaPods:
+
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. You can install it with the following command:
+
+```bash
+$ gem install cocoapods
 ```
 
-* Select button type as 'Custom' in Attributes inspector 
-* Use loadingType property to select the button loading type.
-* Use showCancel property to show cancel while loading.
-* Set deleagte for each button for handling delegate function.
-* Use didFinishedTask delegate method to handle button response.
+To integrate `SubmitButton` into your Xcode project using CocoaPods, specify it in your Podfile:
+```ruby
+
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '9.0'
+use_frameworks!
+
+target '<Your Target Name>' do
+pod "SubmitButton"
+end
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
+### Manually:
+
+* Download SubmitButton.
+* Drag and drop SubmitButton directory to your project
 
 
 ## Example Project
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+## Requirements
+* Xcode 7.3+
+* iOS 8.0+
+* Swift 2.3+
+
+## Communication
+
+- If you **found a bug**, open an issue.
+- If you **have a feature request**, open an issue.
+- If you **want to contribute**, submit a pull request.
+
+## Usage
+
+Here is how you can use `SubmitButton`. 
+
+Import SubmitButton to your viewcontroller,
+
+```swift
+import SubmitButton
+```
+
+* Select button type as 'Custom' in Attributes inspector 
+* Use loadingType property to select the button loading type.
+* Use Cancel Enable in Attributes inspector or cancelEnabled property to show cancel while loading.
+* Set deleagte for each button for handling delegate function.
+* Use didFinishedTask delegate method to handle button response.
+
+```swift
+
+submitButton.delegate = self
+
+extension ViewController: SubmitButtonDelegate {
+
+func didFinishedTask(sender: SubmitButton) {
+if sender == submitButton {
+sender.completeAnimation(status: .success)
+}
+}
+}
+```
 
 ## Release Notes
 

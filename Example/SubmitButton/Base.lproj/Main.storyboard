@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,6 +22,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdu-W8-xY2" customClass="SubmitButton" customModule="SubmitButton">
+                                <rect key="frame" x="62.5" y="120" width="250" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="LKF-vU-uwp"/>
                                     <constraint firstAttribute="height" constant="50" id="i8d-G8-lGI"/>
@@ -29,6 +33,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WZL-aL-Q7Z" customClass="SubmitButton" customModule="SubmitButton">
+                                <rect key="frame" x="62.5" y="195" width="250" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="0GN-lL-rbt"/>
                                     <constraint firstAttribute="height" constant="50" id="bHC-4O-AEj"/>
@@ -39,6 +44,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0M1-9w-hIV" customClass="SubmitButton" customModule="SubmitButton">
+                                <rect key="frame" x="62.5" y="270" width="250" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="Gg8-K3-Eyu"/>
                                     <constraint firstAttribute="height" constant="50" id="N8S-8S-ANW"/>
@@ -49,6 +55,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWV-vC-q7T" customClass="SubmitButton" customModule="SubmitButton">
+                                <rect key="frame" x="62.5" y="345" width="250" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="EIv-CD-ASY"/>
                                     <constraint firstAttribute="height" constant="50" id="zib-EM-V75"/>
