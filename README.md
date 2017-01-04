@@ -14,11 +14,10 @@ SubmitButton is a subclass of UIButton, written in Swift 3. SubmitButton library
 
 ## Highlights
 
-- [x] Color of button is custom.
+- [x] Custom button color.
 - [x] Shows loading indicator.
 - [x] Support success, failed and cancelled status.
 - [x] Support storyboard customization. 
-- [x] Supports Swift and Objective-C.
 
 ## Installation
 
@@ -98,19 +97,6 @@ sender.completeAnimation(status: .success)
 }
 }
 ```
-
-## Release Notes
-
-Version 0.2.2
-* Fixed minor bugs
-
-Version 0.2.1
-* Added functionality to cancel loading
-* Added error completion mode
-* Added deleagtes for button response handling
-
-Version 0.1.1
-* Initial release
 
 ## Author
 
