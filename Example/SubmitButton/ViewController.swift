@@ -9,7 +9,7 @@
 import UIKit
 import SubmitButton
 
-class ViewController: UIViewController, SubmitButtonDelegate{
+class ViewController: UIViewController {
 
     @IBOutlet var firstButton: SubmitButton!
     @IBOutlet var secondButton: SubmitButton!
@@ -32,15 +32,10 @@ class ViewController: UIViewController, SubmitButtonDelegate{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     @IBAction func firstButtonOnClick(_ sender: SubmitButton) {
-        
     }
-    
     @IBAction func secondButtonOnClick(_ sender: SubmitButton) {
-        
     }
-    
     @IBAction func thirdButtonOnClick(_ sender: SubmitButton) {
         if sender.isSelected {
             let when = DispatchTime.now() + 3
@@ -49,7 +44,6 @@ class ViewController: UIViewController, SubmitButtonDelegate{
             }
         }
     }
-    
     @IBAction func fourthButtonOnClick(_ sender: SubmitButton) {
         if sender.isSelected {
             let when = DispatchTime.now() + 3
@@ -58,14 +52,14 @@ class ViewController: UIViewController, SubmitButtonDelegate{
             }
         }
     }
-    
+}
+
+extension ViewController: SubmitButtonDelegate {
     func didFinishedTask(sender: SubmitButton) {
         if sender == firstButton {
             sender.completeAnimation(status: .success)
-        }else if sender == secondButton{
+        } else if sender == secondButton {
             sender.completeAnimation(status: .failed)
         }
     }
-
 }
-
