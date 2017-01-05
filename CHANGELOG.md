@@ -12,3 +12,6 @@ All notable changes to this project will be documented in this file.
 
 #### `0.2.2`
 * Fixed minor bugs 
+
+#### `0.2.3`
+* Removed delegate and added closure for button task completion

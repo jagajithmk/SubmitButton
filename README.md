@@ -81,21 +81,14 @@ import SubmitButton
 * Select button type as 'Custom' in Attributes inspector 
 * Use loadingType property to select the button loading type.
 * Use Cancel Enable in Attributes inspector or cancelEnabled property to show cancel while loading.
-* Set deleagte for each button for handling delegate function.
-* Use didFinishedTask delegate method to handle button response.
 
 ```swift
 
-submitButton.delegate = self
+submitButton.loadingType = .timeLimited
+submitButton.taskCompletion = {_ in
+    self.submitButton.completeAnimation(status: .success)
+}
 
-extension ViewController: SubmitButtonDelegate {
-
-func didFinishedTask(sender: SubmitButton) {
-if sender == submitButton {
-sender.completeAnimation(status: .success)
-}
-}
-}
 ```
 
 ## Author
