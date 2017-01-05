@@ -17,13 +17,15 @@ class ViewController: UIViewController {
     @IBOutlet var fourthButton: SubmitButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        firstButton.delegate = self
         firstButton.loadingType = .timeLimited
-        secondButton.delegate = self
+        firstButton.taskCompletion = {_ in
+            self.firstButton.completeAnimation(status: .success)
+        }
         secondButton.loadingType = .timeLimited
-        thirdButton.delegate = self
+        secondButton.taskCompletion = {_ in
+            self.secondButton.completeAnimation(status: .failed)
+        }
         thirdButton.loadingType = .continuous
-        fourthButton.delegate = self
         fourthButton.loadingType = .continuous
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -50,16 +52,6 @@ class ViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: when) {
                 sender.completeAnimation(status: .failed)
             }
-        }
-    }
-}
-
-extension ViewController: SubmitButtonDelegate {
-    func didFinishedTask(sender: SubmitButton) {
-        if sender == firstButton {
-            sender.completeAnimation(status: .success)
-        } else if sender == secondButton {
-            sender.completeAnimation(status: .failed)
         }
     }
 }
