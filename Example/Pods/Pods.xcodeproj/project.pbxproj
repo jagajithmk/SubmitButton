@@ -12,12 +12,13 @@
 		33E2CAD192C2CDB0CC04613625A10A78 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EC994CDC2D681BA26389F78A7E4B325 /* UIKit.framework */; };
 		47E0892C85F16F23C8D840FF40064C1A /* SubmitButton-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A10BDB6BD125D657B65C10A8F171628 /* SubmitButton-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E8B8FF4EB041F3C71E06E8421EBDBEB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 616BEB51ECCAD129BDBCB7A956B56CC6 /* Foundation.framework */; };
+		51ADB019AF9E617BE2A7D6B3342FD44C /* SubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38910E49099D35B607C531EA517DD0EB /* SubmitButton.swift */; };
 		97A22094A3A8706BF161DDCC123ECBA8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 616BEB51ECCAD129BDBCB7A956B56CC6 /* Foundation.framework */; };
-		992202F74BE0555DEA5115FFA5F1D064 /* SubmitButton-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 67CDADAE40450434D2ECCDFB4767DC48 /* SubmitButton-dummy.m */; };
+		A32827DB25623CC6A84CC9ADB6B22B51 /* SubmitButtonAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F28EF6D1D74EDD11FB34A7E79CA9E3 /* SubmitButtonAnimations.swift */; };
+		A4C701BB7E5DEE43B06BEBD6D831F189 /* SubmitButton-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 67CDADAE40450434D2ECCDFB4767DC48 /* SubmitButton-dummy.m */; };
 		ADF78C5A2A71FEC4F7125C320829E577 /* Pods-SubmitButton_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DB263D82711B451EA3161604EA40D6E0 /* Pods-SubmitButton_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C6366A0E38501E4E7BFB832056E688E6 /* Pods-SubmitButton_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B66D28FC542B9D2BAA93C0D674124A /* Pods-SubmitButton_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F65E65732DECFCBFA6AEB9B9E24667C8 /* Pods-SubmitButton_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 134CB03B1A22179903967DE05725A3FD /* Pods-SubmitButton_Tests-dummy.m */; };
-		FA3AA60BFFCFF6DADB7D29269AAA26CA /* SubmitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F70B4B1CADD5A49FBBB7C2A6C31883 /* SubmitButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,15 +43,16 @@
 		185DE453CEDFC9DC76061A7EE806D266 /* Pods-SubmitButton_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SubmitButton_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		1F52530B93BCE80D98F18CD5D6615BEE /* Pods-SubmitButton_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SubmitButton_Example.release.xcconfig"; sourceTree = "<group>"; };
 		21320849CBADEC6DFB213FCE781BBBEF /* Pods-SubmitButton_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SubmitButton_Tests-resources.sh"; sourceTree = "<group>"; };
+		38910E49099D35B607C531EA517DD0EB /* SubmitButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubmitButton.swift; sourceTree = "<group>"; };
 		44B66D28FC542B9D2BAA93C0D674124A /* Pods-SubmitButton_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SubmitButton_Tests-umbrella.h"; sourceTree = "<group>"; };
 		4DBEB97AC9AF662D14246393702FFD4B /* Pods-SubmitButton_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-SubmitButton_Example.modulemap"; sourceTree = "<group>"; };
 		4F927C3114E0D38E743D3A04E9180A18 /* SubmitButton.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SubmitButton.modulemap; sourceTree = "<group>"; };
 		56580360B370664FE04CB5D0E7E9EAD1 /* SubmitButton-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SubmitButton-prefix.pch"; sourceTree = "<group>"; };
 		616BEB51ECCAD129BDBCB7A956B56CC6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		67CDADAE40450434D2ECCDFB4767DC48 /* SubmitButton-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SubmitButton-dummy.m"; sourceTree = "<group>"; };
-		78F70B4B1CADD5A49FBBB7C2A6C31883 /* SubmitButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubmitButton.swift; sourceTree = "<group>"; };
 		7EC994CDC2D681BA26389F78A7E4B325 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		86C7C608B98603571F1CB69308F82781 /* Pods-SubmitButton_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SubmitButton_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		91F28EF6D1D74EDD11FB34A7E79CA9E3 /* SubmitButtonAnimations.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubmitButtonAnimations.swift; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9A10BDB6BD125D657B65C10A8F171628 /* SubmitButton-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SubmitButton-umbrella.h"; sourceTree = "<group>"; };
 		A43F6643B4819430A16FE620C15DF350 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -113,21 +115,22 @@
 			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		32B6588EC0F5BB2B2B4AF47A958F7883 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				78F70B4B1CADD5A49FBBB7C2A6C31883 /* SubmitButton.swift */,
-			);
-			name = Classes;
-			path = Classes;
-			sourceTree = "<group>";
-		};
 		433CD3331B6C3787F473C941B61FC68F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				E6EE98446B568159EE277B68FD442AF0 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5DB592C3DFF5C7AA7F6ABBBD6357D980 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				38910E49099D35B607C531EA517DD0EB /* SubmitButton.swift */,
+				91F28EF6D1D74EDD11FB34A7E79CA9E3 /* SubmitButtonAnimations.swift */,
+			);
+			name = Classes;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -141,23 +144,23 @@
 			);
 			sourceTree = "<group>";
 		};
-		AAA95D242F0EA7BED8BB9C91C8529E4C /* SubmitButton */ = {
-			isa = PBXGroup;
-			children = (
-				32B6588EC0F5BB2B2B4AF47A958F7883 /* Classes */,
-			);
-			name = SubmitButton;
-			path = SubmitButton;
-			sourceTree = "<group>";
-		};
 		B4231EEDF31DAD028A7190A99EDAD3D3 /* SubmitButton */ = {
 			isa = PBXGroup;
 			children = (
-				AAA95D242F0EA7BED8BB9C91C8529E4C /* SubmitButton */,
+				C4BC35F7A9439A25B0421A4C1A00E123 /* SubmitButton */,
 				EEA14EFB0167C7FA554AB7258EC61C9F /* Support Files */,
 			);
 			name = SubmitButton;
 			path = ../..;
+			sourceTree = "<group>";
+		};
+		C4BC35F7A9439A25B0421A4C1A00E123 /* SubmitButton */ = {
+			isa = PBXGroup;
+			children = (
+				5DB592C3DFF5C7AA7F6ABBBD6357D980 /* Classes */,
+			);
+			name = SubmitButton;
+			path = SubmitButton;
 			sourceTree = "<group>";
 		};
 		D814E388CB9CD95E339367563B0CD182 /* Pods-SubmitButton_Tests */ = {
@@ -279,7 +282,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7E40977C91A9374CF3929606D16BD54F /* Build configuration list for PBXNativeTarget "SubmitButton" */;
 			buildPhases = (
-				1663C63C852FA190D3907FD2CD091438 /* Sources */,
+				16F92424A5882CB6A9169E080A08A611 /* Sources */,
 				B5A2C2AA0D9DD7EC7F6AEFD63D0CB3C1 /* Frameworks */,
 				8EC343BE9F819D3B0ECC45903BD7003D /* Headers */,
 			);
@@ -339,12 +342,13 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1663C63C852FA190D3907FD2CD091438 /* Sources */ = {
+		16F92424A5882CB6A9169E080A08A611 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				992202F74BE0555DEA5115FFA5F1D064 /* SubmitButton-dummy.m in Sources */,
-				FA3AA60BFFCFF6DADB7D29269AAA26CA /* SubmitButton.swift in Sources */,
+				A4C701BB7E5DEE43B06BEBD6D831F189 /* SubmitButton-dummy.m in Sources */,
+				51ADB019AF9E617BE2A7D6B3342FD44C /* SubmitButton.swift in Sources */,
+				A32827DB25623CC6A84CC9ADB6B22B51 /* SubmitButtonAnimations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

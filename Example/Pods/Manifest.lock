@@ -1,5 +1,5 @@
 PODS:
-  - SubmitButton (0.2.2)
+  - SubmitButton (0.2.4)
 
 DEPENDENCIES:
   - SubmitButton (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  SubmitButton: 8d10c912724655e5191bb97df9bd8596f89d93cf
+  SubmitButton: c5a1d4a892efa6c8317ff3e15bb39b58e55fb67c
 
 PODFILE CHECKSUM: f42c027860107570fa656bdf0cca1854df684b12
 

@@ -2,8 +2,22 @@
 //  SubmitButton.swift
 //
 //  Created by Jagajith M Kalarickal on 02/12/16.
-//  Copyright © 2016 qbuser. All rights reserved.
+//  Copyright © 2016 Jagajith M Kalarickal. All rights reserved.
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+//    associated documentation files (the "Software"), to deal in the Software without restriction,
+//    including without limitation the rights to use, copy, modify, merge, publish, distribute,
+//    sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+//    furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all copies or
+//    substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+//  LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+//  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+//  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import UIKit
 
@@ -76,17 +90,17 @@ open class SubmitButton: UIButton {
     /// Button loading type
     open var loadingType: ButtonLoadingType  = ButtonLoadingType.timeLimited
     /// Color of dots and line in loading state
-    @IBInspectable open var sbDotColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1)
+    @IBInspectable open var dotColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1)
     /// Color of error button
     @IBInspectable open var errorColor: UIColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
     /// Color of cancelled button state
     @IBInspectable open var cancelledButtonColor: UIColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
     /// Line width of the border
-    @IBInspectable open var sbLineWidth: CGFloat = 3
+    @IBInspectable open var lineWidth: CGFloat = 3
     /// Border Color
-    @IBInspectable open var sbBorderColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1) {
+    @IBInspectable open var borderColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1) {
         didSet {
-            borderLayer.borderColor = sbBorderColor.cgColor
+            borderLayer.borderColor = borderColor.cgColor
         }
     }
     /// Lines count on loading state
@@ -128,20 +142,20 @@ open class SubmitButton: UIButton {
     fileprivate lazy var borderLayer: CALayer = {
         let layer =  CALayer()
         layer.borderWidth = Constants.borderWidth
-        layer.borderColor = self.sbBorderColor.cgColor
+        layer.borderColor = self.borderColor.cgColor
         layer.backgroundColor = nil
         return layer
     }()
     fileprivate lazy var progressLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = nil
-        layer.strokeColor = self.sbDotColor.cgColor
+        layer.strokeColor = self.dotColor.cgColor
         layer.bounds = self.circleBounds
-        layer.path = UIBezierPath(arcCenter: self.boundsCenter, radius: self.boundsCenter.y - self.sbLineWidth / 2,
+        layer.path = UIBezierPath(arcCenter: self.boundsCenter, radius: self.boundsCenter.y - self.lineWidth / 2,
                                   startAngle: CGFloat(-M_PI_2), endAngle: 3*CGFloat(M_PI_2), clockwise: true).cgPath
         layer.strokeEnd = Constants.minStrokeEndPosition
         layer.lineCap = kCALineCapRound
-        layer.lineWidth = self.sbLineWidth
+        layer.lineWidth = self.lineWidth
         return layer
     }()
     fileprivate lazy var checkMarkLayer: CAShapeLayer = {
@@ -227,7 +241,7 @@ open class SubmitButton: UIButton {
         checkMarkLayer.opacity = Constants.minOpacity
         errorCrossMarkLayer.opacity = Constants.minOpacity
         borderLayer.borderWidth = Constants.borderWidth
-        borderLayer.borderColor = sbBorderColor.cgColor
+        borderLayer.borderColor = borderColor.cgColor
         progressLayer.removeFromSuperlayer()
         progressLayer.strokeEnd = Constants.minStrokeEndPosition
         CATransaction.commit()
@@ -295,7 +309,7 @@ extension SubmitButton {
     fileprivate func setupButton() {
         setTitle(startText, for: UIControlState())
         layer.cornerRadius  = bounds.midY
-        layer.borderColor = sbBorderColor.cgColor
+        layer.borderColor = borderColor.cgColor
         layer.addSublayer( borderLayer )
         setTitleColor(startTitleColor, for: UIControlState())
     }
@@ -349,7 +363,7 @@ extension SubmitButton {
     //add button border position and size animation
     fileprivate func addBorderPositionAndSizeDecreasingAnimation() {
         let borderAnim = CABasicAnimation(keyPath: AnimKeys.borderWidth)
-        borderAnim.toValue = sbLineWidth
+        borderAnim.toValue = lineWidth
         let borderBounds = CABasicAnimation(keyPath: AnimKeys.bounds)
         borderBounds.toValue = NSValue(cgRect: circleBounds)
         let borderPosition = CABasicAnimation(keyPath: AnimKeys.position)
@@ -383,7 +397,7 @@ extension SubmitButton {
             addTimerForLimitedTimeLoadingAnimation()
         }
         prepareGroup.notify(queue: DispatchQueue.main) {
-            self.borderLayer.borderWidth = self.sbLineWidth
+            self.borderLayer.borderWidth = self.lineWidth
             self.borderLayer.bounds = self.circleBounds
             self.borderLayer.position = self.boundsCenter
             self.layer.backgroundColor = self.loadingCenterColor.cgColor
@@ -405,7 +419,7 @@ extension SubmitButton {
     // start default loading
     fileprivate func startLoadingAnimation() {
         let arCenter = boundsCenter
-        let radius   = circleBounds.midX - sbLineWidth / 2
+        let radius   = circleBounds.midX - lineWidth / 2
         var lines = [CAShapeLayer]()
         let lineOffset: CGFloat = 2 * CGFloat(M_PI) / CGFloat(linesCount)
         for i in 0..<linesCount {
@@ -417,9 +431,9 @@ extension SubmitButton {
                                      endAngle: startAngle + dotLength,
                                      clockwise: true).cgPath
             line.bounds = circleBounds
-            line.strokeColor = sbDotColor.cgColor
-            line.lineWidth = sbLineWidth
-            line.fillColor = sbDotColor.cgColor
+            line.strokeColor = dotColor.cgColor
+            line.lineWidth = lineWidth
+            line.fillColor = dotColor.cgColor
             line.lineCap = kCALineCapRound
             layer.insertSublayer(line, above: borderLayer)
             line.position = arCenter
@@ -515,8 +529,8 @@ extension SubmitButton {
         boundsAnim.toValue = NSValue(cgRect: startBounds)
         let colorAnim = CABasicAnimation(keyPath: AnimKeys.backgroundColor)
         if completionStatus == .success {
-            colorAnim.toValue = sbDotColor.cgColor
-            colorAnim.fromValue = sbDotColor.cgColor
+            colorAnim.toValue = dotColor.cgColor
+            colorAnim.fromValue = dotColor.cgColor
         } else if completionStatus == .failed {
             colorAnim.toValue = errorColor.cgColor
             colorAnim.fromValue = errorColor.cgColor
@@ -549,8 +563,8 @@ extension SubmitButton {
         addButtonPositionAndSizeIncreasingAnimation(status: completionStatus)
         if completionStatus == .success {
             //Adding tick mark
-            self.layer.backgroundColor = self.sbDotColor.cgColor
-            borderLayer.borderColor = sbDotColor.cgColor
+            self.layer.backgroundColor = self.dotColor.cgColor
+            borderLayer.borderColor = dotColor.cgColor
             checkMarkLayer.position = CGPoint(x: layer.bounds.midX, y: layer.bounds.midY)
             if checkMarkLayer.superlayer == nil {
                 checkMarkLayer.path = pathForMark().cgPath
@@ -595,7 +609,7 @@ extension SubmitButton {
         layer.strokeColor = startBackgroundColor.cgColor
         layer.lineCap     = kCALineCapRound
         layer.lineJoin    = kCALineJoinRound
-        layer.lineWidth   = sbLineWidth
+        layer.lineWidth   = lineWidth
         return layer
     }
     //Function for creating the check mark layer
@@ -662,7 +676,7 @@ extension SubmitButton {
         tempLayer.strokeColor = cancelOptionColor.cgColor
         tempLayer.lineCap     = kCALineCapRound
         tempLayer.lineJoin    = kCALineJoinRound
-        tempLayer.lineWidth   = sbLineWidth
+        tempLayer.lineWidth   = lineWidth
         tempLayer.position = CGPoint(x: button.layer.bounds.midX, y: button.layer.bounds.midY)
         tempLayer.path = pathForCrossMark(XShift: Constants.cancelMarkXShift, YShift: Constants.cancelMarkYShift).cgPath
         button.layer.addSublayer( tempLayer )
