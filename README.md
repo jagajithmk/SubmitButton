@@ -78,11 +78,17 @@ Import SubmitButton to your viewcontroller,
 import SubmitButton
 ```
 
-* Select button type as 'Custom' in Attributes inspector 
+* Select button type as 'Custom' in Attributes inspector. 
 * Use loadingType property to select the button loading type.
 * Use Cancel Enable in Attributes inspector or cancelEnabled property to show cancel while loading.
 
+<p align="center">
+<img src="http://i.imgur.com/zOSIxHS.jpg" alt="Select button type as 'Custom' in Attributes inspector" />
+</p>
+
 ```swift
+
+submitButton.loadingType = .timeLimited
 
 submitButton.taskCompletion { (_) in
     self.submitButton.completeAnimation(status: .success)

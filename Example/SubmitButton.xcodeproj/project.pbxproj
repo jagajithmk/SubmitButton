@@ -172,7 +172,6 @@
 				607FACCE1AFB9204008FA782 /* Resources */,
 				E175703FEC1D2AA84AD3273B /* [CP] Embed Pods Frameworks */,
 				1C64BAD7C58B973FD684C1F9 /* [CP] Copy Pods Resources */,
-				6DF844B51E1E1AD600998CC7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -282,19 +281,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SubmitButton_Example/Pods-SubmitButton_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		6DF844B51E1E1AD600998CC7 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		753959975254A123B73EB0DC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
