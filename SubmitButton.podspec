@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'SubmitButton'
-  s.version          = '0.2.3'
+  s.version          = '0.2.4'
   s.summary          = 'SubmitButton library provides a better user interation for a submit button.'
 
   s.description      = 'Submitbutton library provide a new catching user interface for a submit button. This library is written in Swift 3. From now on, anytime the user clicks on the button that involves addressing to the server, they will see the animation that informs them of the progress and completion.'

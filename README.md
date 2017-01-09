@@ -84,8 +84,7 @@ import SubmitButton
 
 ```swift
 
-submitButton.loadingType = .timeLimited
-submitButton.taskCompletion = {_ in
+submitButton.taskCompletion { (_) in
     self.submitButton.completeAnimation(status: .success)
 }
 

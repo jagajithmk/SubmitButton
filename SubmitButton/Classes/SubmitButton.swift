@@ -74,7 +74,7 @@ public typealias CompletionType = (SubmitButton) -> Void
 open class SubmitButton: UIButton {
     // MARK: - Public variables
     /// Button loading type
-    open var loadingType: ButtonLoadingType  = ButtonLoadingType.continuous
+    open var loadingType: ButtonLoadingType  = ButtonLoadingType.timeLimited
     /// Color of dots and line in loading state
     @IBInspectable open var sbDotColor: UIColor = #colorLiteral(red: 0, green: 0.8250309825, blue: 0.6502585411, alpha: 1)
     /// Color of error button
@@ -118,7 +118,6 @@ open class SubmitButton: UIButton {
             setTitle(startText, for: UIControlState())
         }
     }
-    open var taskCompletion: CompletionType = { value in }
     open var currState: ButtonState {
         return buttonState
     }
@@ -179,6 +178,7 @@ open class SubmitButton: UIButton {
     fileprivate let finishLoadingGroup = DispatchGroup()
     fileprivate var progress: CGFloat = 0
     fileprivate var timer: Timer?
+    fileprivate var taskCompletion: CompletionType?
     //intiate the update of the progress of progress bar
     func updateLoadingProgress() {
         guard progress <= 1 else {
@@ -250,6 +250,9 @@ open class SubmitButton: UIButton {
     // update of the progress of progress bar
     open func updateProgress(_ progress: CGFloat) {
         progressLayer.strokeEnd = progress
+    }
+    open func taskCompletion(completion: @escaping CompletionType) {
+        taskCompletion = completion
     }
     lazy var progressPerFrequency: CGFloat = {
         let progressPerSecond = 1.0 / Constants.requestDuration
@@ -458,8 +461,7 @@ extension SubmitButton {
             finishLoadingGroup.enter()
         }
         finishLoadingGroup.notify(queue: DispatchQueue.main) {
-            self.taskCompletion(self)
-            //self.delegate?.didFinishedTask(sender: self)
+            self.taskCompletion!(self)
         }
     }
     //Complete animation based on user input

@@ -17,12 +17,10 @@ class ViewController: UIViewController {
     @IBOutlet var fourthButton: SubmitButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        firstButton.loadingType = .timeLimited
-        firstButton.taskCompletion = {_ in
+        firstButton.taskCompletion { (_) in
             self.firstButton.completeAnimation(status: .success)
         }
-        secondButton.loadingType = .timeLimited
-        secondButton.taskCompletion = {_ in
+        secondButton.taskCompletion { (_) in
             self.secondButton.completeAnimation(status: .failed)
         }
         thirdButton.loadingType = .continuous
